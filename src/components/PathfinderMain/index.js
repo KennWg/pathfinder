@@ -5,6 +5,12 @@ function PathfinderMain() {
 
     const [state, setState] = useState([]);
 
+    //Set initial start and end nodes
+    let startRow = 5;
+    let startCol = 5;
+    let finishRow = 15;
+    let finishCol = 35;
+
     //Make new grid on page load
     useEffect(() => {
         makeGrid();
@@ -15,7 +21,9 @@ function PathfinderMain() {
     const makeNode = (row, col) => {
         return {
             row,
-            col
+            col,
+            isStart: (row === startRow && col === startCol),
+            isFinish: (row === finishRow && col === finishCol)
         }
     };
 
@@ -38,7 +46,6 @@ function PathfinderMain() {
             <div className="row main-button-container w-100 pb-4 justify-content-center">
                 <button className="col-4 btn btn-success mx-5">Go!</button>
                 <button className="col-2 btn btn-danger mx-5">Reset Grid</button>
-                <button className="col-2 btn btn-secondary mx-5">Use Sample Grid</button>
             </div>
             <div className="row toolbar w-100 pb-4 justify-content-center">
                 <button className="col-3 btn btn-info mx-5">Set Start</button>
@@ -50,12 +57,14 @@ function PathfinderMain() {
                     return (
                         <div key={i} className="row d-flex">
                             {row.map((node, j) => {
-                                const { row, col } = node;
+                                const { row, col, isStart, isFinish } = node;
                                 return (
                                     <GridNode
                                         key={j}
                                         col={col}
-                                        row={row}>
+                                        row={row}
+                                        isStart={isStart}
+                                        isFinish={isFinish}>
                                     </GridNode>
                                 );
                             })}
