@@ -35,6 +35,16 @@ function PathfinderMain() {
     return (
         <div className="w-100 justify-content-center">
             <h1 className="text-center my-3">Pathfinder</h1>
+            <div className="row main-button-container w-100 pb-4 justify-content-center">
+                <button className="col-4 btn btn-success mx-5">Go!</button>
+                <button className="col-2 btn btn-danger mx-5">Reset Grid</button>
+                <button className="col-2 btn btn-secondary mx-5">Use Sample Grid</button>
+            </div>
+            <div className="row toolbar w-100 pb-4 justify-content-center">
+                <button className="col-3 btn btn-info mx-5">Set Start</button>
+                <button className="col-3 btn btn-info mx-5">Set End</button>
+                <button className="col-3 btn btn-info mx-5">Toggle Walls</button>
+            </div>
             <div className="grid-container py-2 w-75 align-items-end justify-content-center d-flex flex-column">
                 {state.map((row, i) => {
                     return (
