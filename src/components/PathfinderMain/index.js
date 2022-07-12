@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import GridNode from "../GridNode";
 
 function PathfinderMain() {
@@ -10,9 +10,9 @@ function PathfinderMain() {
     const [mouseDown, setMouseDown] = useState(false);
 
     //Button states with variables for their class names
-    const [startSelected,setStart] = useState(false);
-    const [finishSelected,setFinish] = useState(false);
-    const [wallsSelected,setWalls] = useState(false);
+    const [startSelected, setStart] = useState(false);
+    const [finishSelected, setFinish] = useState(false);
+    const [wallsSelected, setWalls] = useState(false);
 
     const classNameBase = "col-3 btn btn-secondary mx-5";
     const classNameClicked = "col-3 btn btn-info mx-5";
@@ -37,10 +37,10 @@ function PathfinderMain() {
     }
 
     //Set initial start and end nodes
-    const startRow = 4;
-    const startCol = 4;
-    const finishRow = 15;
-    const finishCol = 35;
+    let startRow = useRef(4);
+    let startCol = useRef(4);
+    let finishRow = useRef(15);
+    let finishCol = useRef(35);
 
     //Make new grid on page load
     useEffect(() => {
@@ -52,8 +52,8 @@ function PathfinderMain() {
         return {
             row,
             col,
-            isStart: (row === startRow && col === startCol),
-            isFinish: (row === finishRow && col === finishCol),
+            isStart: (row === startRow.current && col === startCol.current),
+            isFinish: (row === finishRow.current && col === finishCol.current),
             isWall: false
         }
     };
@@ -71,35 +71,44 @@ function PathfinderMain() {
         setState(grid);
     }
 
+    //Function to reset grid
+    const resetGrid = () => {
+        startRow.current = 4;
+        startCol.current = 4;
+        finishRow.current = 15;
+        finishCol.current = 35;
+
+        makeGrid();
+    }
+
     //Click handler for grid
     const gridClickHandler = (row, col) => {
-        if(startSelected) changeStart(row,col);
-        if(finishSelected) changeFinish(row,col);
-        if(wallsSelected) toggleWall(row,col);
+        if (startSelected) changeStart(row, col);
+        if (finishSelected) changeFinish(row, col);
+        if (wallsSelected) toggleWall(row, col);
     }
 
     //Enter handle for grid
     const gridEnterHandler = (row, col) => {
-        if(!mouseDown || !wallsSelected) return;
-        toggleWall(row,col);
+
+        if (!mouseDown || !wallsSelected) return;
+        toggleWall(row, col);
     }
 
     //Mousedown handler
     const mouseDownHandler = () => {
         setMouseDown(true);
-        console.log(mouseDown);
     }
 
     //Mouseup handler
     const mouseUpHandler = () => {
         setMouseDown(false);
-        console.log(mouseDown);
     }
 
     //Change start function
     const changeStart = (row, col) => {
         const newGrid = state.slice();
-        
+
         const oldStartCoords = document.getElementsByClassName('isStart')[0].id.split(',');
         const [oldRow, oldCol] = oldStartCoords;
         const oldNode1 = newGrid[oldRow][oldCol];
@@ -108,23 +117,26 @@ function PathfinderMain() {
             isStart: false
         }
 
-
         const oldNode2 = newGrid[row][col];
         const newNode2 = {
             ...oldNode2,
             isStart: true
         }
 
+        if(oldNode2.isFinish || oldNode2.isWall) return;
+
         newGrid[oldRow][oldCol] = newNode1;
         newGrid[row][col] = newNode2;
 
+        startRow.current = row;
+        startCol.current = col;
         setState(newGrid);
     }
 
     //Change finish function
     const changeFinish = (row, col) => {
         const newGrid = state.slice();
-        
+
         const oldStartCoords = document.getElementsByClassName('isFinish')[0].id.split(',');
         const [oldRow, oldCol] = oldStartCoords;
         const oldNode1 = newGrid[oldRow][oldCol];
@@ -133,16 +145,19 @@ function PathfinderMain() {
             isFinish: false
         }
 
-
         const oldNode2 = newGrid[row][col];
         const newNode2 = {
             ...oldNode2,
             isFinish: true
         }
 
+        if(oldNode2.isStart || oldNode2.isWall) return;
+
         newGrid[oldRow][oldCol] = newNode1;
         newGrid[row][col] = newNode2;
 
+        finishRow.current = row;
+        finishCol.current = col;
         setState(newGrid);
     }
 
@@ -151,6 +166,9 @@ function PathfinderMain() {
         const newGrid = state.slice();
 
         const oldNode = newGrid[row][col];
+
+        if(oldNode.isStart || oldNode.isFinish) return;
+
         const newNode = {
             ...oldNode,
             isWall: !oldNode.isWall
@@ -160,13 +178,18 @@ function PathfinderMain() {
 
         setState(newGrid);
     }
+    
+    //Pathfinder function
+    const dijkstra = () => {
+        console.log(startRow.current, startCol.current, finishRow.current, finishCol.current);
+    }
 
     return (
         <div className="w-100 justify-content-center" onMouseUp={mouseUpHandler} onMouseDown={mouseDownHandler}>
             <h1 className="text-center my-3">Pathfinder</h1>
             <div className="row main-button-container w-100 pb-4 justify-content-center">
-                <button className="col-4 btn btn-success mx-5">Go!</button>
-                <button className="col-2 btn btn-danger mx-5" onClick={makeGrid}>Reset Grid</button>
+                <button className="col-4 btn btn-success mx-5" onClick={dijkstra}>Go!</button>
+                <button className="col-2 btn btn-danger mx-5" onClick={resetGrid}>Reset Grid</button>
             </div>
             <div className="row toolbar w-100 pb-4 justify-content-center">
                 <button className={`${startSelected && classNameClicked} ${!startSelected && classNameBase}`} onClick={startHandler}>Set Start</button>
@@ -186,9 +209,9 @@ function PathfinderMain() {
                                         row={row}
                                         isStart={isStart}
                                         isFinish={isFinish}
-                                        isWall = {isWall}
-                                        onMouseDown={(row,col) => gridClickHandler(row,col)}
-                                        onMouseEnter={(row,col) => gridEnterHandler(row,col)}>
+                                        isWall={isWall}
+                                        onMouseDown={(row, col) => gridClickHandler(row, col)}
+                                        onMouseEnter={(row, col) => gridEnterHandler(row, col)}>
                                     </GridNode>
                                 );
                             })}
