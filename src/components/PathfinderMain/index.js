@@ -79,6 +79,28 @@ function PathfinderMain() {
         makeGrid();
     }
 
+    //Click handler for grid
+    const gridClickHandler = (row, col) => {
+        if(startSelected) changeStart(row,col);
+        if(finishSelected) changeFinish(row,col);
+        if(wallsSelected) toggleWall(row,col);
+    }
+
+    //Change start function
+    const changeStart = (row, col) => {
+        console.log('Handling start change')
+    }
+
+    //Change end function
+    const changeFinish = (row, col) => {
+        console.log('Handling finish change')
+    }
+
+    //Toggle wall function
+    const toggleWall = (row, col) => {
+        console.log('Handling wall change')
+    }
+
     return (
         <div className="w-100 justify-content-center">
             <h1 className="text-center my-3">Pathfinder</h1>
@@ -104,7 +126,8 @@ function PathfinderMain() {
                                         row={row}
                                         isStart={isStart}
                                         isFinish={isFinish}
-                                        isWall = {isWall}>
+                                        isWall = {isWall}
+                                        onMouseDown={(row,col) => gridClickHandler(row,col)}>
                                     </GridNode>
                                 );
                             })}

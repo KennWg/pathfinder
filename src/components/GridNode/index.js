@@ -1,14 +1,19 @@
 import React from "react";
 
 function GridNode(props) {
-    const {row, col, isStart, isFinish} = props;
+    const {row, col, isStart, isFinish, isWall, onMouseDown} = props;
 
-    let startOrFinish;
-    if(isStart) startOrFinish = 'isStart'
-    if(isFinish) startOrFinish = 'isFinish'
+    let specialClass;
+    if(isStart) specialClass = 'isStart';
+    if(isFinish) specialClass = 'isFinish';
+    if(isWall) specialClass = 'isWall';
 
     return(
-        <div id={`${row},${col}`} className={`node col ${startOrFinish}`}></div>
+        <div 
+            id={`${row},${col}`} 
+            className={`node col ${specialClass}`}
+            onMouseDown={() => onMouseDown(row,col)}>
+        </div>
     );
 }
 
