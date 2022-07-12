@@ -6,6 +6,9 @@ function PathfinderMain() {
     //Grid state
     const [state, setState] = useState([]);
 
+    //Mousedown state
+    const [mouseDown, setMouseDown] = useState(false);
+
     //Button states with variables for their class names
     const [startSelected,setStart] = useState(false);
     const [finishSelected,setFinish] = useState(false);
@@ -75,6 +78,24 @@ function PathfinderMain() {
         if(wallsSelected) toggleWall(row,col);
     }
 
+    //Enter handle for grid
+    const gridEnterHandler = (row, col) => {
+        if(!mouseDown || !wallsSelected) return;
+        toggleWall(row,col);
+    }
+
+    //Mousedown handler
+    const mouseDownHandler = () => {
+        setMouseDown(true);
+        console.log(mouseDown);
+    }
+
+    //Mouseup handler
+    const mouseUpHandler = () => {
+        setMouseDown(false);
+        console.log(mouseDown);
+    }
+
     //Change start function
     const changeStart = (row, col) => {
         const newGrid = state.slice();
@@ -141,7 +162,7 @@ function PathfinderMain() {
     }
 
     return (
-        <div className="w-100 justify-content-center">
+        <div className="w-100 justify-content-center" onMouseUp={mouseUpHandler} onMouseDown={mouseDownHandler}>
             <h1 className="text-center my-3">Pathfinder</h1>
             <div className="row main-button-container w-100 pb-4 justify-content-center">
                 <button className="col-4 btn btn-success mx-5">Go!</button>
@@ -166,7 +187,8 @@ function PathfinderMain() {
                                         isStart={isStart}
                                         isFinish={isFinish}
                                         isWall = {isWall}
-                                        onMouseDown={(row,col) => gridClickHandler(row,col)}>
+                                        onMouseDown={(row,col) => gridClickHandler(row,col)}
+                                        onMouseEnter={(row,col) => gridEnterHandler(row,col)}>
                                     </GridNode>
                                 );
                             })}

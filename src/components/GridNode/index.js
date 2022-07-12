@@ -1,7 +1,7 @@
 import React from "react";
 
 function GridNode(props) {
-    const {row, col, isStart, isFinish, isWall, onMouseDown} = props;
+    const {row, col, isStart, isFinish, isWall, onMouseDown, onMouseEnter} = props;
 
     let specialClass = '';
     if(isStart) specialClass = 'isStart';
@@ -12,7 +12,8 @@ function GridNode(props) {
         <div 
             id={`${row},${col}`} 
             className={`node col ${specialClass}`}
-            onMouseDown={() => onMouseDown(row,col)}>
+            onMouseDown={() => onMouseDown(row,col)}
+            onMouseEnter={() => onMouseEnter(row,col)}>
         </div>
     );
 }
