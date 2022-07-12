@@ -34,16 +34,20 @@ function PathfinderMain() {
     }
 
     //Set initial start and end nodes
-    let startRow = 5;
-    let startCol = 5;
-    let finishRow = 15;
-    let finishCol = 35;
+    const [startRow, setStartRow] = useState(4);
+    const [startCol, setStartCol] = useState(4);
+    const [finishRow, setFinishRow] = useState(15);
+    const [finishCol, setFinishCol] = useState(35);
 
     //Make new grid on page load
     useEffect(() => {
         makeGrid();
     }, []);
 
+    //Updates when start/finish rows/cols changed
+    useEffect(() => {
+        makeGrid();
+    }, [startRow, startCol, finishRow, finishCol]);
 
     //Function to make a node object
     const makeNode = (row, col) => {
@@ -71,12 +75,10 @@ function PathfinderMain() {
 
     //Reset grid function
     const resetGrid = () => {
-        startRow = 5;
-        startCol = 5;
-        finishRow = 15;
-        finishCol = 35;
-
-        makeGrid();
+        setStartRow(4);
+        setStartCol(4);
+        setFinishRow(15);
+        setFinishCol(35);
     }
 
     //Click handler for grid
@@ -88,12 +90,14 @@ function PathfinderMain() {
 
     //Change start function
     const changeStart = (row, col) => {
-        console.log('Handling start change')
+        setStartRow(row);
+        setStartCol(col);
     }
 
     //Change end function
     const changeFinish = (row, col) => {
-        console.log('Handling finish change')
+        setFinishRow(row);
+        setFinishCol(col);
     }
 
     //Toggle wall function
