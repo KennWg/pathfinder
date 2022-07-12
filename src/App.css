@@ -11,3 +11,7 @@
 .isFinish {
   background-color: crimson;
 }
+
+.isWall {
+  background-color: gray;
+}

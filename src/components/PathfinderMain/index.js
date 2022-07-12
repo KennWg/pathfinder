@@ -34,20 +34,15 @@ function PathfinderMain() {
     }
 
     //Set initial start and end nodes
-    const [startRow, setStartRow] = useState(4);
-    const [startCol, setStartCol] = useState(4);
-    const [finishRow, setFinishRow] = useState(15);
-    const [finishCol, setFinishCol] = useState(35);
+    const startRow = 4;
+    const startCol = 4;
+    const finishRow = 15;
+    const finishCol = 35;
 
     //Make new grid on page load
     useEffect(() => {
         makeGrid();
     }, []);
-
-    //Updates when start/finish rows/cols changed
-    useEffect(() => {
-        makeGrid();
-    }, [startRow, startCol, finishRow, finishCol]);
 
     //Function to make a node object
     const makeNode = (row, col) => {
@@ -73,14 +68,6 @@ function PathfinderMain() {
         setState(grid);
     }
 
-    //Reset grid function
-    const resetGrid = () => {
-        setStartRow(4);
-        setStartCol(4);
-        setFinishRow(15);
-        setFinishCol(35);
-    }
-
     //Click handler for grid
     const gridClickHandler = (row, col) => {
         if(startSelected) changeStart(row,col);
@@ -90,19 +77,67 @@ function PathfinderMain() {
 
     //Change start function
     const changeStart = (row, col) => {
-        setStartRow(row);
-        setStartCol(col);
+        const newGrid = state.slice();
+        
+        const oldStartCoords = document.getElementsByClassName('isStart')[0].id.split(',');
+        const [oldRow, oldCol] = oldStartCoords;
+        const oldNode1 = newGrid[oldRow][oldCol];
+        const newNode1 = {
+            ...oldNode1,
+            isStart: false
+        }
+
+
+        const oldNode2 = newGrid[row][col];
+        const newNode2 = {
+            ...oldNode2,
+            isStart: true
+        }
+
+        newGrid[oldRow][oldCol] = newNode1;
+        newGrid[row][col] = newNode2;
+
+        setState(newGrid);
     }
 
-    //Change end function
+    //Change finish function
     const changeFinish = (row, col) => {
-        setFinishRow(row);
-        setFinishCol(col);
+        const newGrid = state.slice();
+        
+        const oldStartCoords = document.getElementsByClassName('isFinish')[0].id.split(',');
+        const [oldRow, oldCol] = oldStartCoords;
+        const oldNode1 = newGrid[oldRow][oldCol];
+        const newNode1 = {
+            ...oldNode1,
+            isFinish: false
+        }
+
+
+        const oldNode2 = newGrid[row][col];
+        const newNode2 = {
+            ...oldNode2,
+            isFinish: true
+        }
+
+        newGrid[oldRow][oldCol] = newNode1;
+        newGrid[row][col] = newNode2;
+
+        setState(newGrid);
     }
 
     //Toggle wall function
     const toggleWall = (row, col) => {
-        console.log('Handling wall change')
+        const newGrid = state.slice();
+
+        const oldNode = newGrid[row][col];
+        const newNode = {
+            ...oldNode,
+            isWall: !oldNode.isWall
+        }
+
+        newGrid[row][col] = newNode;
+
+        setState(newGrid);
     }
 
     return (
@@ -110,7 +145,7 @@ function PathfinderMain() {
             <h1 className="text-center my-3">Pathfinder</h1>
             <div className="row main-button-container w-100 pb-4 justify-content-center">
                 <button className="col-4 btn btn-success mx-5">Go!</button>
-                <button className="col-2 btn btn-danger mx-5" onClick={resetGrid}>Reset Grid</button>
+                <button className="col-2 btn btn-danger mx-5" onClick={makeGrid}>Reset Grid</button>
             </div>
             <div className="row toolbar w-100 pb-4 justify-content-center">
                 <button className={`${startSelected && classNameClicked} ${!startSelected && classNameBase}`} onClick={startHandler}>Set Start</button>
