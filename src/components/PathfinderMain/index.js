@@ -75,15 +75,9 @@ function PathfinderMain() {
     }
 
     //Function to reset grid
-    const resetGrid = () => {
-        startRow.current = 4;
-        startCol.current = 4;
-        finishRow.current = 15;
-        finishCol.current = 35;
-
-        makeGrid();
+    const resetGrid = async () => {
+        window.location.reload(false);
     }
-
 
 
     //Functions related to handling clicks for manipulation of grid
