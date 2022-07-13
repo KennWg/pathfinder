@@ -1,3 +1,16 @@
+# Pathfinder
+
+This project was done using React and JavaScript as a learning tool for myself, as I wanted more practice using React and implementing a pathfinding algorithm.  It uses Dijkstra's to find the closest path to the target.  I may add alternate pathfinding algorithms later on as a future thing.  
+
+## Screenshot
+![Screenshot](/Screenshot.png)
+
+## Link
+Link to the page can be found at https://kennwg.github.io/pathfinder/ 
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
