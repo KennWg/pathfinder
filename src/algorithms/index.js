@@ -46,3 +46,15 @@ export function dijkstra(grid, start, finish){
         }
     }
 }
+
+export function getShortestPath(finish){
+    const pathNodes = [];
+
+    //Loop over nodes current exists, using the previous attribute we added earlier during the dijkstra function to find path back to start
+    let current = finish;
+    while(current !== null){
+        pathNodes.push(current);
+        current = current.previous;
+    }
+    return pathNodes;
+}
