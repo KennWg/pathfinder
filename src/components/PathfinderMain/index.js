@@ -207,7 +207,19 @@ function PathfinderMain() {
         for(let i = 0; i <= visitedNodes.length; i++){
             //If the array of nodes is empty, we can set the timeout to animate the shortest path
             if(i === visitedNodes.length){
-
+                setTimeout(() => {
+                    for(let j = shortestPath.length - 1; j >= 0; j--){
+                        setTimeout(() => {
+                            const node = shortestPath[j];
+                            document.getElementById(`${node.row},${node.col}`).className = 'node node-shortest-path col';
+                        }, 10 * j)
+                    }
+                }, 10 * i)
+            } else {
+                setTimeout(() => {
+                    const node = visitedNodes[i];
+                    document.getElementById(`${node.row},${node.col}`).className = 'node node-visited col';
+                }, 10 * i)
             }
         }
     }

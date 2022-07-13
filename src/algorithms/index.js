@@ -29,13 +29,13 @@ export function dijkstra(grid, start, finish){
         if(closest === finish) return visitedNodes;
 
         //Get neighbours of current node to update their distance (filter the ones that have been visited already)
-        const neighbours = [];
-        const {col, row} = closest;
+        let neighbours = [];
+        const {row, col} = closest;
 
-        if(row > 0) neighbours.push(grid[row -1 ][col]);
+        if(row > 0) neighbours.push(grid[row - 1][col]);
         if(row < grid.length - 1) neighbours.push(grid[row + 1][col]);
         if(col > 0) neighbours.push(grid[row][col - 1]);
-        if(col < grid.length - 1) neighbours.push(grid[row][col + 1])
+        if(col < grid[0].length - 1) neighbours.push(grid[row][col + 1])
 
         neighbours = neighbours.filter(neighbour => !neighbour.isVisited);
 
@@ -52,7 +52,7 @@ export function getShortestPath(finish){
 
     //Loop over nodes current exists, using the previous attribute we added earlier during the dijkstra function to find path back to start
     let current = finish;
-    while(current !== null){
+    while(current){
         pathNodes.push(current);
         current = current.previous;
     }
