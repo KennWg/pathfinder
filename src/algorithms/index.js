@@ -19,7 +19,7 @@ export function dijkstra(grid, start, finish){
 
         //Skip if closest node is wall, stop function if no previous nodes were converted from infinity in previous loops (no path can be found to target)
         if(closest.isWall) continue;
-        if(closest.distance === infinity) return visitedNodes;
+        if(closest.distance === Infinity) return visitedNodes;
 
         //Set the current node to visited and push node to visited nodes array
         closest.isVisited = true;

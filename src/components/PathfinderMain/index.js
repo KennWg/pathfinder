@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import GridNode from "../GridNode";
+import { dijkstra, getShortestPath} from "../../algorithms";
 
 function PathfinderMain() {
 
@@ -82,6 +83,10 @@ function PathfinderMain() {
 
         makeGrid();
     }
+
+
+
+    //Functions related to handling clicks for manipulation of grid
 
     //Click handler for grid
     const gridClickHandler = (row, col) => {
@@ -180,11 +185,34 @@ function PathfinderMain() {
 
         setState(newGrid);
     }
+
+
+
+
+    //Functions related to pathfinding
     
-    //Pathfinder function
+    //Function to begin pathfinding and call other functions
     const startDijkstra = () => {
-        console.log(startRow.current, startCol.current, finishRow.current, finishCol.current);
+        const start = state[startRow.current][startCol.current];
+        const finish = state[finishRow.current][finishCol.current];
+
+        const visitedNodes = dijkstra(state, start, finish);
+        const shortestPath = getShortestPath(finish);
+
+        animateDijkstra(visitedNodes, shortestPath);
     }
+
+    const animateDijkstra = (visitedNodes, shortestPath) => {
+        //loop through the array in order of the search
+        for(let i = 0; i <= visitedNodes.length; i++){
+            //If the array of nodes is empty, we can set the timeout to animate the shortest path
+            if(i === visitedNodes.length){
+
+            }
+        }
+    }
+
+    //Returned display
 
     return (
         <div className="w-100 justify-content-center" onMouseUp={mouseUpHandler} onMouseDown={mouseDownHandler}>
