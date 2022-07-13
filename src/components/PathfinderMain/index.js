@@ -54,7 +54,9 @@ function PathfinderMain() {
             col,
             isStart: (row === startRow.current && col === startCol.current),
             isFinish: (row === finishRow.current && col === finishCol.current),
-            isWall: false
+            isWall: false,
+            isVisited: false,
+            distance: Infinity
         }
     };
 
@@ -180,7 +182,7 @@ function PathfinderMain() {
     }
     
     //Pathfinder function
-    const dijkstra = () => {
+    const startDijkstra = () => {
         console.log(startRow.current, startCol.current, finishRow.current, finishCol.current);
     }
 
@@ -188,7 +190,7 @@ function PathfinderMain() {
         <div className="w-100 justify-content-center" onMouseUp={mouseUpHandler} onMouseDown={mouseDownHandler}>
             <h1 className="text-center my-3">Pathfinder</h1>
             <div className="row main-button-container w-100 pb-4 justify-content-center">
-                <button className="col-4 btn btn-success mx-5" onClick={dijkstra}>Go!</button>
+                <button className="col-4 btn btn-success mx-5" onClick={startDijkstra}>Go!</button>
                 <button className="col-2 btn btn-danger mx-5" onClick={resetGrid}>Reset Grid</button>
             </div>
             <div className="row toolbar w-100 pb-4 justify-content-center">
